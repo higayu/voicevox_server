@@ -1,3 +1,53 @@
+# 実装する手順
+
+```bash
+sudo apt update
+sudo apt install -y build-essential git curl unzip libsndfile1
+
+cd /opt
+sudo mkdir -p voicevox_core && cd voicevox_core
+pip install https://github.com/VOICEVOX/voicevox_core/releases/download/0.16.1/voicevox_core-0.16.1-cp310-abi3-manylinux_2_34_x86_64.whl
+
+cd /opt
+sudo mkdir -p voicevox_setup
+cd voicevox_setup
+
+# downloader を取得
+sudo curl -sSfL https://github.com/VOICEVOX/voicevox_core/releases/latest/download/download-linux-x64 -o download
+sudo chmod +x download
+
+# VOICEVOX Core + dict + onnxruntime をまとめてダウンロード＆展開
+sudo ./download
+```
+
+```bash
+ls -lh /opt/voicevox_setup/voicevox_core
+find /opt/voicevox_setup/voicevox_core -name "*.whl"
+```
+
+# Rust インストーラー
+```bash
+# Rust インストーラを取得
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# 完了したら環境変数を読み込み
+source $HOME/.cargo/env
+```
+
+```bash
+source venv/bin/activate
+git clone https://github.com/VOICEVOX/voicevox_core.git
+cd /home/kali/voicevox_server/voicevox_core/crates/voicevox_core_python_api
+
+cd voicevox_core/crates/voicevox_core_python_api
+sudo apt install python3-maturin
+maturin develop --release
+
+sudo apt install patchelf
+# もしくは
+pip install patchelf
+```
+
 # 使用出来るキャラ
 curl "http://192.168.1.221:8082/speak?text=%E3%81%8A%E3%81%AF%E3%82%88%E3%81%86%20%E3%81%94%E3%81%96%E3%81%84%E3%81%BE%E3%81%99&style_id=14" -o test_proxy.wav
 ```bash
