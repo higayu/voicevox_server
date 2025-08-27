@@ -46,6 +46,12 @@ maturin develop --release
 sudo apt install patchelf
 # もしくは
 pip install patchelf
+
+export LD_LIBRARY_PATH=/opt/voicevox_setup/voicevox_core/onnxruntime/lib:$LD_LIBRARY_PATH
+uvicorn main:app --reload
+
+echo 'export LD_LIBRARY_PATH=/opt/voicevox_setup/voicevox_core/onnxruntime/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 # 使用出来るキャラ
