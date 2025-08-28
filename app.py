@@ -55,3 +55,25 @@ async def speak(text: str):
 
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
+
+@app.get("/speak2")
+async def speak_v2(text: str):
+    try:
+        wav: np.ndarray = synthesizer.tts(text, style_id)
+
+        # 一時ファイルに保存
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+        tmp_path = tmp.name
+        tmp.close()
+
+        # ndarray → PCM16 WAV 書き込み
+        with wave.open(tmp_path, "wb") as wf:
+            wf.setnchannels(1)          # モノラル
+            wf.setsampwidth(2)          # 16bit PCM
+            wf.setframerate(24000)      # サンプリングレート
+            wf.writeframes((wav * 32767).astype(np.int16).tobytes())
+
+        return FileResponse(tmp_path, media_type="audio/wav", filename="speech.wav")
+
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
