@@ -35,6 +35,9 @@ source $HOME/.cargo/env
 ```
 
 ```bash
+# 仮想環境の作成
+python3 -m venv venv
+
 source venv/bin/activate
 git clone https://github.com/VOICEVOX/voicevox_core.git
 cd /home/kali/voicevox_server/voicevox_core/crates/voicevox_core_python_api
