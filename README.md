@@ -356,3 +356,9 @@ curl "http://192.168.1.221:8082/speak?text=%E3%81%8A%E3%81%AF%E3%82%88%E3%81%86%
   スタイル: ノーマル (style_id=42)
 (venv) gym-sever@gym-sever:/var/www/voicevox_server$ 
   ```
+
+# html追加する場合
+```bash
+pip install jinja2
+pip install jinja2 python-multipart
+```
