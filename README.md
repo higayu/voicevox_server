@@ -39,6 +39,10 @@ source $HOME/.cargo/env
 python3 -m venv venv
 
 source venv/bin/activate
+
+pip install fastapi uvicorn[standard] jinja2 numpy
+
+
 git clone https://github.com/VOICEVOX/voicevox_core.git
 cd /home/kali/voicevox_server/voicevox_core/crates/voicevox_core_python_api
 
@@ -46,15 +50,27 @@ cd voicevox_core/crates/voicevox_core_python_api
 sudo apt install python3-maturin
 maturin develop --release
 
-sudo apt install patchelf
-# もしくは
 pip install patchelf
-
-export LD_LIBRARY_PATH=/opt/voicevox_setup/voicevox_core/onnxruntime/lib:$LD_LIBRARY_PATH
-uvicorn main:app --reload
 
 echo 'export LD_LIBRARY_PATH=/opt/voicevox_setup/voicevox_core/onnxruntime/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
 source ~/.bashrc
+
+sudo apt update
+sudo apt install -y cargo rustc
+pip install maturin
+```
+
+```bash
+cd /var/www/voicevox_server/voicevox_core/crates/voicevox_core_python_api
+
+maturin develop
+
+python -c "import voicevox_core; print(dir(voicevox_core))"
+export LD_LIBRARY_PATH=/opt/voicevox_setup/voicevox_core/onnxruntime/lib:$LD_LIBRARY_PATH
+```
+
+```bash
+uvicorn main:app --reload
 ```
 
 # 使用出来るキャラ

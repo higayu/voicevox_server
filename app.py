@@ -10,8 +10,8 @@ import numpy as np
 from voicevox_core.blocking import Onnxruntime, OpenJtalk, Synthesizer, VoiceModelFile
 
 # パス設定
-dict_dir = "/opt/voicevox_setup/voicevox_core/dict/open_jtalk_dic_utf_8-1.11"
-vvm_path = "/opt/voicevox_setup/voicevox_core/models/vvms/0.vvm"
+dict_dir = "resources/dict/open_jtalk_dic_utf_8-1.11"
+vvm_path = "resources/models/0.vvm"
 
 onnxruntime = Onnxruntime.load_once()
 open_jtalk = OpenJtalk(dict_dir)
