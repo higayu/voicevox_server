@@ -4,13 +4,7 @@
 sudo apt update
 sudo apt install -y build-essential git curl unzip libsndfile1
 
-cd /opt
-sudo mkdir -p voicevox_core && cd voicevox_core
 pip install https://github.com/VOICEVOX/voicevox_core/releases/download/0.16.1/voicevox_core-0.16.1-cp310-abi3-manylinux_2_34_x86_64.whl
-
-cd /opt
-sudo mkdir -p voicevox_setup
-cd voicevox_setup
 
 # downloader を取得
 sudo curl -sSfL https://github.com/VOICEVOX/voicevox_core/releases/latest/download/download-linux-x64 -o download
@@ -21,8 +15,8 @@ sudo ./download
 ```
 
 ```bash
-ls -lh /opt/voicevox_setup/voicevox_core
-find /opt/voicevox_setup/voicevox_core -name "*.whl"
+ls -lh /voicevox_core
+find /voicevox_core -name "*.whl"
 ```
 
 # Rust インストーラー
@@ -58,6 +52,15 @@ source ~/.bashrc
 sudo apt update
 sudo apt install -y cargo rustc
 pip install maturin
+```
+
+```bash
+pip install --upgrade pip setuptools wheel
+pip install \
+  https://github.com/VOICEVOX/voicevox_core/releases/download/0.15.8/voicevox_core-0.15.8+cpu-cp38-abi3-linux_x86_64.whl
+
+  pip install --upgrade pip
+  pip install "onnxruntime==1.13.1"
 ```
 
 ```bash

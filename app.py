@@ -11,7 +11,7 @@ from voicevox_core.blocking import Onnxruntime, OpenJtalk, Synthesizer, VoiceMod
 
 # パス設定
 dict_dir = "resources/dict/open_jtalk_dic_utf_8-1.11"
-vvm_path = "resources/models/0.vvm"
+vvm_path = "resources/models/vvms/0.vvm"
 
 onnxruntime = Onnxruntime.load_once()
 open_jtalk = OpenJtalk(dict_dir)
@@ -59,21 +59,29 @@ async def speak(text: str):
 @app.get("/speak2")
 async def speak_v2(text: str):
     try:
-        wav: np.ndarray = synthesizer.tts(text, style_id)
+        y = synthesizer.tts(text, style_id)
 
-        # 一時ファイルに保存
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
         tmp_path = tmp.name
         tmp.close()
 
-        # ndarray → PCM16 WAV 書き込み
-        with wave.open(tmp_path, "wb") as wf:
-            wf.setnchannels(1)          # モノラル
-            wf.setsampwidth(2)          # 16bit PCM
-            wf.setframerate(24000)      # サンプリングレート
-            wf.writeframes((wav * 32767).astype(np.int16).tobytes())
+        if isinstance(y, (bytes, bytearray)):
+            # そのままWAVとして返す
+            with open(tmp_path, "wb") as f:
+                f.write(y)
+        else:
+            # ndarray → 16bit PCM WAV
+            y = np.asarray(y, dtype=np.float32)
+            y = np.clip(y, -1.0, 1.0)
+            pcm16 = (y * 32767.0).astype(np.int16)
+            with wave.open(tmp_path, "wb") as wf:
+                wf.setnchannels(1)
+                wf.setsampwidth(2)      # 16bit
+                wf.setframerate(24000)
+                wf.writeframes(pcm16.tobytes())
 
         return FileResponse(tmp_path, media_type="audio/wav", filename="speech.wav")
-
     except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
+        # サーバログにスタックトレースを出すと調査が速い
+        import traceback; traceback.print_exc()
+        return JSONResponse(status_code=500, content={"error": repr(e)})

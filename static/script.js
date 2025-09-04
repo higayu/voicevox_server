@@ -10,7 +10,9 @@ document.getElementById("tts-form").addEventListener("submit", async function(e)
     }
 
     try {
-        const response = await fetch(`/voicevox/speak?text=${encodeURIComponent(text)}`);
+        // script.js 内
+        const response = await fetch(`/speak2?text=${encodeURIComponent(text)}`);
+
 
         if (!response.ok) {
             alert("エラー: " + response.status);

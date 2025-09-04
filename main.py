@@ -8,7 +8,7 @@ from voicevox_core.blocking import Onnxruntime, OpenJtalk, Synthesizer, VoiceMod
 # パス設定
 # プロジェクト内の resources を参照するように変更
 dict_dir = "resources/dict/open_jtalk_dic_utf_8-1.11"
-vvm_path = "resources/models/1.vvm"   # 四国めたん
+vvm_path = "resources/models/vvms/1.vvm"   # 四国めたん
 
 
 # 初期化
